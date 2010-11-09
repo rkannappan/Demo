@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<database name="finmgrdb" schema="public" type="PostgreSQL - 8.3.4">
+   <tables>
+      <table name="expense" numRows="5" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="true" defaultValue="nextval('expense_expense_id_seq'::regclass)" digits="0" id="0" name="expense_id" nullable="false" remarks="" size="10" type="serial"/>
+         <column autoUpdated="false" digits="0" id="1" name="expense_type_name" nullable="false" remarks="" size="2147483647" type="varchar">
+            <parent column="expense_type_name" foreignKey="expense_expense_type_name_fkey" implied="false" onDeleteCascade="false" table="expense_type"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="2" name="expense_date" nullable="true" remarks="" size="13" type="date"/>
+         <column autoUpdated="false" digits="17" id="3" name="amount" nullable="true" remarks="" size="17" type="float8"/>
+         <primaryKey column="expense_id" sequenceNumberInPK="1"/>
+         <index name="expense_pkey" unique="true">
+            <column ascending="true" name="expense_id"/>
+         </index>
+      </table>
+      <table name="expense_type" numRows="4" remarks="" schema="public" type="TABLE">
+         <column autoUpdated="false" digits="0" id="0" name="expense_type_name" nullable="false" remarks="" size="2147483647" type="varchar">
+            <child column="expense_type_name" foreignKey="expense_expense_type_name_fkey" implied="false" onDeleteCascade="false" table="expense"/>
+         </column>
+         <column autoUpdated="false" digits="0" id="1" name="expense_type_desc" nullable="true" remarks="" size="2147483647" type="varchar"/>
+         <primaryKey column="expense_type_name" sequenceNumberInPK="1"/>
+         <index name="expense_type_pkey" unique="true">
+            <column ascending="true" name="expense_type_name"/>
+         </index>
+      </table>
+   </tables>
+</database>

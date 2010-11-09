@@ -1,0 +1,19 @@
+<resultMap id=”select-product-result” class=”product”>
+  <result property=”id” column=”PRD_ID”/>
+  <result property=”description” column=”PRD_DESCRIPTION”/>
+  <result property=”category” column=”PRD_CAT_ID” select=”selectCategory”/>
+</resultMap>
+
+<resultMap id=”select-category-result” class=”category”>
+  <result property=”id” column=”CAT_ID”/>
+  <result property=”description” column=”CAT_DESCRIPTION”/>
+</resultMap>
+
+<select id=”selectProduct” parameterClass=”int” resultMap=”select-product-result”>
+  select * from PRODUCT where PRD_ID = #value#
+</select>
+
+<!-- Can cache this one since there could be several products with similar categories -->
+<select id=”selectCategory” parameterClass=”int” resultMap=”select-category-result”>
+  select * from CATEGORY where CAT_ID = #value#
+</select>

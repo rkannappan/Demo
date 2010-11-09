@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="ExpenseType">
+
+	<!--  types -->
+	<typeAlias alias="ExpenseType" type="com.finmgr.model.ExpenseType" />
+
+	<resultMap id="ExpTypeResult" class="ExpenseType">
+    	<result property="name" column="expense_type_name"/>
+    	<result property="desc" column="expense_type_desc"/>
+   	</resultMap>
+ 
+ 	<select id="selectAllExpTypes" resultMap="ExpTypeResult">
+    	select * from EXPENSE_TYPE
+ 	</select>
+ 	
+  	<select id="countExpTypes" resultClass="int">
+    	select count(*) from EXPENSE_TYPE
+ 	</select>
+ 	
+ 	<select id="selectExpTypeByName" parameterClass="java.lang.String" resultClass="ExpenseType">
+ 		select expense_type_name as name, expense_type_desc as desc from EXPENSE_TYPE where expense_type_name=#name#
+	</select> 	
+
+  	<insert id="addExpType" parameterClass="ExpenseType">
+  		INSERT INTO EXPENSE_TYPE VALUES (#name#, #desc#)
+  	</insert>
+  	
+  	<delete id="deleteExpType" parameterClass="ExpenseType">
+    	delete from EXPENSE_TYPE where expense_type_name = #name#
+  	</delete>
+
+</sqlMap>

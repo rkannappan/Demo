@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap namespace="Expense">
+
+	<!--  types -->
+	<typeAlias alias="Expense" type="com.finmgr.model.Expense" />
+
+	<cacheModel id="ExpenseTableCache" type="LRU">
+		<flushInterval hours="24" />
+		<property name="size" value="1000" />
+	</cacheModel>
+
+	<!-- Similarly I can have parameterMap too -->
+	<resultMap id="ExpResult" class="Expense">
+    	<result property="id" column="expense_id"/>
+    	<result property="typeName" column="expense_type_name"/>
+    	<result property="date" column="expense_date"/>
+    	<result property="amount" column="amount" nullValue="0"/>
+   	</resultMap>
+ 
+ 	<!-- Using resultMap since the bean properties names and column names do not match -->
+ 	<select id="selectAllExpenses" resultMap="ExpResult" cacheModel="ExpenseTableCache">
+    	select * from EXPENSE
+ 	</select>
+ 	
+ 	<!-- Using column aliasing so that I don't need resultMap -->
+ 	<select id="selectExpensesByTypeName" parameterClass="java.lang.String" resultClass="Expense" cacheModel="ExpenseTableCache">
+ 		select expense_id as id, expense_type_name as typeName, expense_date as date, amount from EXPENSE where expense_type_name=#typeName#
+	</select>
+	
+	<!-- We can have null value replacements like this: #typeName:VARCHAR:NO_ENTRY# -->
+	<insert id="addExpense" parameterClass="Expense">
+  		INSERT INTO EXPENSE (expense_type_name, expense_date, amount) VALUES (#typeName#, #date#, #amount#)
+  		<selectKey keyProperty="id" resultClass="java.lang.Integer">
+      		select currval('expense_expense_id_seq')
+    	</selectKey>  		
+  	</insert>
+	 	
+	<!--  I could use java.lang.Integer too --> 	
+  	<delete id="deleteExpense" parameterClass="int">
+    	delete from EXPENSE where expense_id = #id#
+  	</delete>
+
+</sqlMap>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ibatorConfiguration
+  PUBLIC "-//Apache Software Foundation//DTD Apache iBATIS ibator Configuration 1.0//EN"
+  "http://ibatis.apache.org/dtd/ibator-config_1_0.dtd">
+
+<ibatorConfiguration>
+
+	<ibatorContext id="ConditionalJava5" targetRuntime="Ibatis2Java5" defaultModelType="conditional">
+
+	<ibatorPlugin type="org.apache.ibatis.ibator.plugins.EqualsHashCodePlugin" />
+	
+	<ibatorPlugin type="org.apache.ibatis.ibator.plugins.SqlMapConfigPlugin">
+		<property name="fileName" value="SqlMapConfig.xml" />
+		<property name="targetPackage" value="generatedibator" />
+		<property name="targetProject" value="../src/main/resources" />
+	</ibatorPlugin>		
+
+	<jdbcConnection driverClass="org.postgresql.Driver"
+		connectionURL="jdbc:postgresql://localhost:5432/finmgrdb" userId="postgres"
+		password="postgres" />
+
+	<javaModelGenerator targetPackage="com.finmgr.generatedibator.model"
+		targetProject="../src/main/java">
+		<property name="enableSubPackages" value="true" />
+		<property name="trimStrings" value="true" />
+	</javaModelGenerator>
+
+	<sqlMapGenerator targetPackage="generatedibator"
+		targetProject="../src/main/resources">
+		<property name="enableSubPackages" value="true" />
+	</sqlMapGenerator>
+
+	<daoGenerator type="GENERIC-CI" targetPackage="com.finmgr.generatedibator.dao"
+		targetProject="../src/main/java">
+		<property name="enableSubPackages" value="true" />
+	</daoGenerator>
+		
+	<table tableName="EXPENSE_TYPE" />
+	
+	<table tableName="EXPENSE">
+		<generatedKey column="EXPENSE_ID"
+			sqlStatement="select currval('expense_expense_id_seq')"
+			identity="true" />
+	</table>
+	
+  </ibatorContext>
+
+</ibatorConfiguration>
